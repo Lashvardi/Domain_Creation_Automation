@@ -15,7 +15,7 @@ def get_existing_folders():
 
 
 def create_subdomain(folder_name):
-    subdomain = f"{folder_name}.yourdomain.com"
+    subdomain = f"{folder_name}.500ml.ge"
     url = f"https://api.cloudflare.com/client/v4/zones/{CLOUDFLARE_ZONE_ID}/dns_records"
     headers = {
         "Authorization": f"Bearer {CLOUDFLARE_API_TOKEN}",
@@ -23,7 +23,7 @@ def create_subdomain(folder_name):
     }
     data = {
         "type": "A",
-        "name": "test",
+        "name": subdomain,
         "content": "157.230.119.18",
         "ttl": 1,
         "proxied": False
