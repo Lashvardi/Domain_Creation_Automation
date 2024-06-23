@@ -5,12 +5,14 @@ import requests
 CLOUDFLARE_API_TOKEN = os.getenv('CLOUDFLARE_API_TOKEN')
 CLOUDFLARE_ZONE_ID = os.getenv('CLOUDFLARE_ZONE_ID')
 
+
 def get_existing_folders():
     folders = []
     for root, dirs, files in os.walk('.'):
         for d in dirs:
             folders.append(os.path.join(root, d))
     return folders
+
 
 def create_subdomain(folder_name):
     subdomain = f"{folder_name}.yourdomain.com"
@@ -22,7 +24,7 @@ def create_subdomain(folder_name):
     data = {
         "type": "A",
         "name": subdomain,
-        "content": "YOUR_SERVER_IP",
+        "content": "157.230.119.18",
         "ttl": 1,
         "proxied": False
     }
@@ -32,6 +34,7 @@ def create_subdomain(folder_name):
     else:
         print(f"Failed to create subdomain: {subdomain}")
         print(response.text)
+
 
 if __name__ == "__main__":
     existing_folders = get_existing_folders()
