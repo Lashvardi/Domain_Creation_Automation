@@ -23,7 +23,7 @@ def create_subdomain(folder_name):
     }
     data = {
         "type": "A",
-        "name": subdomain,
+        "name": "test",
         "content": "157.230.119.18",
         "ttl": 1,
         "proxied": False
