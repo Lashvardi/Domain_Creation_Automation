@@ -1,18 +1,26 @@
 import os
 import requests
+from datetime import datetime
 
 # Environment variables from GitHub Actions
 CLOUDFLARE_API_TOKEN = os.getenv('CLOUDFLARE_API_TOKEN')
 CLOUDFLARE_ZONE_ID = os.getenv('CLOUDFLARE_ZONE_ID')
 
+def get_newest_folder_in_projects():
+    projects_dir = 'Projects'
+    if not os.path.exists(projects_dir):
+        print(f"The directory {projects_dir} does not exist.")
+        return None
 
-def get_existing_folders():
-    folders = []
-    for root, dirs, files in os.walk('.'):
-        for d in dirs:
-            folders.append(os.path.join(root, d))
-    return folders
+    folders = [f for f in os.listdir(projects_dir) if os.path.isdir(os.path.join(projects_dir, f))]
+    
+    if not folders:
+        print(f"No folders found in {projects_dir}.")
+        return None
 
+    # Get the most recent folder based on the last modification time
+    newest_folder = max(folders, key=lambda f: os.path.getmtime(os.path.join(projects_dir, f)))
+    return os.path.join(projects_dir, newest_folder)
 
 def create_subdomain(folder_name):
     subdomain = f"{folder_name}.500ml.ge"
@@ -35,9 +43,8 @@ def create_subdomain(folder_name):
         print(f"Failed to create subdomain: {subdomain}")
         print(response.text)
 
-
 if __name__ == "__main__":
-    existing_folders = get_existing_folders()
-    for folder in existing_folders:
-        folder_name = os.path.basename(folder)
+    newest_folder = get_newest_folder_in_projects()
+    if newest_folder:
+        folder_name = os.path.basename(newest_folder)
         create_subdomain(folder_name)
