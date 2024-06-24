@@ -38,7 +38,7 @@ def create_subdomain(folder_name):
         "name": subdomain,
         "content": "157.230.119.18",
         "ttl": 1,
-        "proxied": False
+        "proxied": True
     }
     response = requests.post(url, json=data, headers=headers)
     if response.status_code == 200:
